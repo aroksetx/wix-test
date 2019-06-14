@@ -1,23 +1,34 @@
 (() => {
   class ImageFinder {
-    search(query) {
-      const result = window.data.staticImagesData
-      .filter(item => item.title.includes(query))
-      .map(item => {
+
+    constructor(modules){
+      this.modules = modules;
+    }
+
+    search(query, moduleId = null) {
+      try {
+        const searchModule = this._loadModuleSearch(moduleId);
+        if(searchModule == null) throw 'Module not found!';
+        return searchModule.module.search(query);
+      } catch(e) {
+        console.error(e)
+      }
+    }
+
+    _loadModuleSearch(moduleId) {
+      return this.modules.find(module => module.moduleId === moduleId);
+    }
+
+    _resultBuilder(query, result) {
+      const formatResult = result.map(item => {
         return {
           id: item.id,
           url: item.url,
           title: item.title
-        }
-      });
-      
-      return this._resultBuilder(query, result);
-    }
-
-    _resultBuilder(query, result) {
+        }});
       return {
         query: query,
-        images: result
+        images: formatResult
       }
     }
   }
@@ -25,4 +36,9 @@
   window.classes = window.classes || {};
   window.classes.ImageFinder = ImageFinder;
 })();
+
+
+
+
+
 
