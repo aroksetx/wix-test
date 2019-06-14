@@ -11,10 +11,14 @@
         }
       });
       
+      return this._resultBuilder(query, result);
+    }
+
+    _resultBuilder(query, result) {
       return {
         query: query,
         images: result
-      };
+      }
     }
   }
 
