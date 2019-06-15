@@ -6,9 +6,11 @@
       }
 
       search(query) {
-        const result = window.data.staticImagesData
+        return new Promise((resolve, reject) => {
+          const result = window.data.staticImagesData
         .filter(item => item.title.includes(query));
-        return this._resultBuilder(query, result);
+        resolve(this._resultBuilder(query, result));
+        })
       }
     }
   

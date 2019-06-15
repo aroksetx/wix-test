@@ -3,14 +3,16 @@
       
       constructor(){
         super();
-        this.url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=b394136d5dde8d9d0d4f8fc6685386e2&tformat=json&tags=cat&format=json&nojsoncallback=1&ags=';
-        this.controller = new AbortController();
+        this.url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=b394136d5dde8d9d0d4f8fc6685386e2&tformat=json&format=json&nojsoncallback=1&extras=url_o&tags=cat';
       }
         
       async search(query) {
+       
+
         return new Promise((resolve, reject) => {
             this._getData(query).then(({photos}) => {
-                const {photo} = photos;
+                let {photo} = photos;
+                photo = photo.map(item => { return {...item, url: item.url_o}})
                 resolve(this._resultBuilder(query, photo));
             }).catch(e => reject(e));
         })

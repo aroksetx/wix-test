@@ -3,18 +3,31 @@
 
     constructor(modules){
       this.modules = modules;
+      this.controller = new AbortController();
+      this.cancel = () => null;// a no-op to start with
+      this.galleryStory = null;
     }
 
-    search(query, moduleId = null) {
+    search(query, moduleId = null, galleryId = null) {
+      this.galleryStory = this.galleryStory == null 
+      ? galleryId
+      : this.galleryStory === galleryId 
+        ? this.cancel() : null;
+
+     
       try {
-        const searchModule = this._loadModuleSearch(moduleId);
+        const searchModule = this._loadModuleSearch(moduleId.toLowerCase());
         if(searchModule == null) throw 'Module not found!';
         return new Promise((resolve, reject) => {
-          resolve(searchModule.module.search(query))
-        }).catch(error => reject(error));
+          const id = setTimeout(() => {
+            resolve(searchModule.module.search(query));
+          }, 100)
+          this.cancel =  () => clearTimeout(id);
+        }).catch(error => console.log(error));
       } catch(e) {
         console.error(e)
       }
+
     }
 
     _loadModuleSearch(moduleId) {
@@ -37,6 +50,8 @@
 
   window.classes = window.classes || {};
   window.classes.ImageFinder = ImageFinder;
+  window.cancelRequest = window.cancelRequest || function(){};
+
 })();
 
 
