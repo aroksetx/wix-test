@@ -51,9 +51,9 @@
     }
 
     doSearch(query, moduleId = null) {
-      console.log(moduleId)
-      const searchResults = this._imageFinder.search(query, moduleId);
-      this._onSearchResultReady(searchResults);
+      this._imageFinder.search(query, moduleId).then(searchResults => {
+        this._onSearchResultReady(searchResults);
+      })
     }
 
     addToNode(node) {

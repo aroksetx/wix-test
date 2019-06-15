@@ -9,7 +9,9 @@
       try {
         const searchModule = this._loadModuleSearch(moduleId);
         if(searchModule == null) throw 'Module not found!';
-        return searchModule.module.search(query);
+        return new Promise((resolve, reject) => {
+          resolve(searchModule.module.search(query))
+        }).catch(error => reject(error));
       } catch(e) {
         console.error(e)
       }

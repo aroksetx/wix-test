@@ -23,15 +23,20 @@
     <script src="../resources/static-images-db.js"></script>
     <script src="../javascript/ImageFinder.js"></script>
     <script src="../javascript/StaticSearchModule.js"></script>
+    <script src="../javascript/FlickerSearchModule.js"></script>
     <script src="../javascript/Gallery.js"></script>
 
     <!-- initiate world -->
     <script>
-      window.static = new window.classes.StaticSearchModule();
+
       window.imageFinder = new window.classes.ImageFinder([
         {
           module: new window.classes.StaticSearchModule(),
           moduleId: 'static'
+        },
+        {
+          module: new window.classes.FlieckerSearchModule(),
+          moduleId: 'flickr'
         }
       ]);
 
